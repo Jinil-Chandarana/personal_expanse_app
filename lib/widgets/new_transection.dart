@@ -6,6 +6,19 @@ class NewTransection extends StatelessWidget {
   final Function addTx;
   NewTransection(this.addTx);
 
+  void submitData() {
+    final enteredTitle = titleControler.text;
+    final enteredAmount = double.parse(amountContoler.text);
+
+    if (enteredAmount <= 0 || enteredTitle.isEmpty) {
+      return;
+    }
+    addTx(
+      enteredTitle,
+      enteredAmount,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -17,19 +30,19 @@ class NewTransection extends StatelessWidget {
             TextField(
               decoration: InputDecoration(labelText: 'Title'),
               controller: titleControler,
+              onSubmitted: (_) => submitData(),
             ),
             TextField(
               decoration: InputDecoration(labelText: 'Amount'),
               controller: amountContoler,
+              keyboardType: TextInputType.number,
+              onSubmitted: (_) => submitData(),
             ),
             TextButton(
               onPressed: () {
                 print(titleControler.text);
                 print(amountContoler.text);
-                addTx(
-                  titleControler.text,
-                  double.parse(amountContoler.text),
-                );
+                submitData;
               },
               child: Text('Add Transection'),
               style: ButtonStyle(
