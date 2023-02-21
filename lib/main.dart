@@ -15,8 +15,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  // String amountInput;
-  // String titleInput;
+  final titleControler = TextEditingController();
+  final amountContoler = TextEditingController();
 
   final List<Transection> transection = [
     Transection(
@@ -40,7 +40,6 @@ class MyHomePage extends StatelessWidget {
         title: Text('Flutter App'),
       ),
       body: Column(
-        //mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
@@ -59,20 +58,16 @@ class MyHomePage extends StatelessWidget {
                 children: [
                   TextField(
                     decoration: InputDecoration(labelText: 'Title'),
-                    // onChanged: (value) {
-                    //   titleInput = value;
-                    // },
+                    controller: titleControler,
                   ),
                   TextField(
                     decoration: InputDecoration(labelText: 'Amount'),
-                    // onChanged: (value) {
-                    //   amountInput = value;
-                    // },
+                    controller: amountContoler,
                   ),
                   TextButton(
                     onPressed: () {
-                      // print(amountInput);
-                      // print(titleInput);
+                      print(titleControler.text);
+                      print(amountContoler.text);
                     },
                     child: Text('Add Transection'),
                     style: ButtonStyle(
