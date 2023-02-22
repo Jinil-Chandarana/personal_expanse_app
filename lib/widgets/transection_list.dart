@@ -33,43 +33,30 @@ class TransectionList extends StatelessWidget {
               itemCount: transections.length,
               itemBuilder: (context, index) {
                 return Card(
-                  child: Row(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 15,
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Theme.of(context).primaryColor,
-                            width: 2,
-                          ),
-                        ),
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                            '\$:  ${transections[index].amount.toStringAsFixed(2)}',
-                            style: Theme.of(context).textTheme.titleMedium),
+                  elevation: 3,
+                  margin: EdgeInsets.symmetric(vertical: 7, horizontal: 13),
+                  child: ListTile(
+                    leading: Container(
+                      child: FittedBox(
+                        child: Text('\$${transections[index].amount}'),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            transections[index].title,
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            DateFormat.yMMMd().format(transections[index].date),
-                            style: TextStyle(
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
+                      width: 80,
+                      height: 50,
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Theme.of(context).primaryColor, width: 2.3),
+                        //color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    title: Text(
+                      transections[index].title,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    subtitle: Text(
+                      DateFormat.yMMMd().format(transections[index].date),
+                    ),
                   ),
                 );
               },

@@ -27,7 +27,7 @@ class Chart extends StatelessWidget {
         'day': DateFormat.E().format(weekDay).substring(0, 1),
         'amount': totalSum,
       };
-    });
+    }).reversed.toList();
   }
 
   double get totalSpanding {
@@ -41,23 +41,25 @@ class Chart extends StatelessWidget {
     print(groupedTransectionValues);
     return Card(
       elevation: 6,
-      margin: EdgeInsets.all(20),
+      margin: EdgeInsets.all(13),
       child: Container(
         padding: EdgeInsets.all(10),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: groupedTransectionValues.map((data) {
-              return Flexible(
-                fit: FlexFit.tight,
-                child: ChartBar(
-                  data['day'],
-                  data['amount'],
-                  totalSpanding == 0.0
-                      ? 0.0
-                      : (data['amount'] as double) / totalSpanding,
-                ),
-              );
-            }).toList()),
+        child: Container(
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: groupedTransectionValues.map((data) {
+                return Flexible(
+                  fit: FlexFit.tight,
+                  child: ChartBar(
+                    data['day'],
+                    data['amount'],
+                    totalSpanding == 0.0
+                        ? 0.0
+                        : (data['amount'] as double) / totalSpanding,
+                  ),
+                );
+              }).toList()),
+        ),
       ),
     );
   }

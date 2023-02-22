@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class ChartBar extends StatelessWidget {
   final String label;
@@ -14,15 +11,18 @@ class ChartBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        FittedBox(
-          child: Text('\$${specndingAmount.toStringAsFixed(0)}'),
+        Container(
+          height: 20,
+          child: FittedBox(
+            child: Text('\$${specndingAmount.toStringAsFixed(0)}'),
+          ),
         ),
         SizedBox(
           height: 4,
         ),
         Container(
-          height: 40,
-          width: 4,
+          height: 100,
+          width: 10,
           child: Stack(
             children: [
               Container(
