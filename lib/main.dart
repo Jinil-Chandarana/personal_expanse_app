@@ -10,7 +10,26 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter App',
+      title: 'Personal Expenses',
+      theme: ThemeData(
+        primarySwatch: Colors.teal,
+        accentColor: Colors.blue[200],
+        //fontFamily: 'OpenSans',
+        textTheme: ThemeData.light().textTheme.copyWith(
+              titleMedium: TextStyle(
+                fontFamily: 'Quicksand',
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+        appBarTheme: AppBarTheme(
+          titleTextStyle: TextStyle(
+            fontFamily: 'OpanSans',
+            fontSize: 22,
+            //fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
       home: MyHomePage(),
     );
   }
@@ -22,20 +41,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transection> _userTransections = [
-    Transection(
-      id: '1',
-      amount: 100.0,
-      title: 'dinner',
-      date: DateTime.now(),
-    ),
-    Transection(
-      id: '2',
-      amount: 500.0,
-      title: 'fruit',
-      date: DateTime.now(),
-    ),
-  ];
+  final List<Transection> _userTransections = [];
 
   void _addNewTransection(String txTitle, double txAmount) {
     final newTx = Transection(
@@ -67,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter App'),
+        title: Text('Personal Expenses'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -76,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Container(
               width: double.infinity,
               child: Card(
-                color: Colors.blue,
+                color: Theme.of(context).primaryColorLight,
                 child: Text('CHART!'),
                 elevation: 5,
               ),
