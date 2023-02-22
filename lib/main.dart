@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_complete_guide/widgets/transection_list.dart';
-import 'package:flutter_complete_guide/widgets/user_transection.dart';
 
+import 'models/transection.dart';
 import 'widgets/new_transection.dart';
+import 'widgets/transection_list.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,7 +16,53 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final List<Transection> _userTransections = [
+    Transection(
+      id: '1',
+      amount: 100.0,
+      title: 'dinner',
+      date: DateTime.now(),
+    ),
+    Transection(
+      id: '2',
+      amount: 500.0,
+      title: 'fruit',
+      date: DateTime.now(),
+    ),
+  ];
+
+  void _addNewTransection(String txTitle, double txAmount) {
+    final newTx = Transection(
+      amount: txAmount,
+      title: txTitle,
+      date: DateTime.now(),
+      id: DateTime.now().toString(),
+    );
+
+    setState(() {
+      _userTransections.add(newTx);
+    });
+  }
+
+  void _startNewTransection(BuildContext ctx) {
+    showModalBottomSheet(
+      context: ctx,
+      builder: (bCtx) {
+        return GestureDetector(
+          onTap: () {},
+          child: NewTransection(_addNewTransection),
+          behavior: HitTestBehavior.opaque,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,9 +81,13 @@ class MyHomePage extends StatelessWidget {
                 elevation: 5,
               ),
             ),
-            UserTransection(),
+            TransectionList(_userTransections),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => _startNewTransection(context),
       ),
     );
   }
