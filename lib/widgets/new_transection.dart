@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransection extends StatefulWidget {
   final Function addTx;
@@ -9,22 +10,41 @@ class NewTransection extends StatefulWidget {
 }
 
 class _NewTransectionState extends State<NewTransection> {
-  final titleControler = TextEditingController();
-  final amountContoler = TextEditingController();
+  final _titleControler = TextEditingController();
+  final _amountContoler = TextEditingController();
+  DateTime _selectedDate;
 
-  void submitData() {
-    final enteredTitle = titleControler.text;
-    final enteredAmount = double.parse(amountContoler.text);
+  void _submitData() {
+    final enteredTitle = _titleControler.text;
+    final enteredAmount = double.parse(_amountContoler.text);
 
-    if (enteredAmount <= 0 || enteredTitle.isEmpty) {
+    if (enteredAmount <= 0 || enteredTitle.isEmpty || _selectedDate == null) {
       return;
     }
     widget.addTx(
       enteredTitle,
       enteredAmount,
+      _selectedDate,
     );
 
     Navigator.of(context).pop();
+  }
+
+  void _presentDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2019),
+      lastDate: DateTime.now(),
+    ).then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+
+      setState(() {
+        _selectedDate = pickedDate;
+      });
+    });
   }
 
   @override
@@ -37,22 +57,44 @@ class _NewTransectionState extends State<NewTransection> {
           children: [
             TextField(
               decoration: InputDecoration(labelText: 'Title'),
-              controller: titleControler,
-              onSubmitted: (_) => submitData(),
+              controller: _titleControler,
+              onSubmitted: (_) => _submitData(),
             ),
             TextField(
               decoration: InputDecoration(labelText: 'Amount'),
-              controller: amountContoler,
+              controller: _amountContoler,
               keyboardType: TextInputType.number,
-              onSubmitted: (_) => submitData(),
+              onSubmitted: (_) => _submitData(),
             ),
-            TextButton(
-              onPressed: submitData,
-              child: Text('Add Transection'),
-              style: ButtonStyle(
-                foregroundColor: MaterialStatePropertyAll(Colors.purple),
-                overlayColor: MaterialStatePropertyAll(Colors.purple[50]),
+            Container(
+              height: 70,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      _selectedDate == null
+                          ? 'No date chodes!'
+                          : 'Date: ${DateFormat.yMd().format(_selectedDate)}',
+                    ),
+                  ),
+                  SizedBox(
+                    width: 7,
+                  ),
+                  TextButton(
+                    onPressed: _presentDatePicker,
+                    child: Text(
+                      'Choose Date',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
               ),
+            ),
+            ElevatedButton(
+              onPressed: _submitData,
+              child: Text('Add Transection'),
             )
           ],
         ),

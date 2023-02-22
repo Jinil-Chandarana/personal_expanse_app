@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       title: 'Personal Expenses',
       theme: ThemeData(
         primarySwatch: Colors.teal,
-        accentColor: Colors.blue[200],
+        accentColor: Colors.teal[500],
         //fontFamily: 'OpenSans',
         textTheme: ThemeData.light().textTheme.copyWith(
               titleMedium: TextStyle(
@@ -52,11 +52,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addNewTransection(String txTitle, double txAmount) {
+  void _addNewTransection(
+      String txTitle, double txAmount, DateTime chosenDate) {
     final newTx = Transection(
       amount: txAmount,
       title: txTitle,
-      date: DateTime.now(),
+      date: chosenDate,
       id: DateTime.now().toString(),
     );
 
