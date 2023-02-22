@@ -79,6 +79,12 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _deleteTransection(String id) {
+    setState(() {
+      _userTransections.removeWhere((tx) => tx.id == id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Chart(_recentTransections),
-            TransectionList(_userTransections),
+            TransectionList(_userTransections, _deleteTransection),
           ],
         ),
       ),

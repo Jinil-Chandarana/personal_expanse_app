@@ -4,7 +4,8 @@ import '../models/transection.dart';
 
 class TransectionList extends StatelessWidget {
   final List<Transection> transections;
-  TransectionList(this.transections);
+  final Function deletTx;
+  TransectionList(this.transections, this.deletTx);
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +59,7 @@ class TransectionList extends StatelessWidget {
                       DateFormat.yMMMd().format(transections[index].date),
                     ),
                     trailing: IconButton(
-                      onPressed: () {},
+                      onPressed: () => deletTx(transections[index].id),
                       icon: Icon(
                         Icons.delete,
                         color: Colors.teal[400],
