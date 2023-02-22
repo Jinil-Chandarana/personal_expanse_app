@@ -10,7 +10,7 @@ class TransectionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: 450,
       child: transections.isEmpty
           ? Column(
               children: [
