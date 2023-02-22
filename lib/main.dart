@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/widgets/chart.dart';
 
 import 'models/transection.dart';
 import 'widgets/new_transection.dart';
@@ -43,6 +44,14 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transection> _userTransections = [];
 
+  List<Transection> get _recentTransections {
+    return _userTransections.where((tx) {
+      return tx.date.isAfter(
+        DateTime.now().subtract(Duration(days: 7)),
+      );
+    }).toList();
+  }
+
   void _addNewTransection(String txTitle, double txAmount) {
     final newTx = Transection(
       amount: txAmount,
@@ -79,14 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              width: double.infinity,
-              child: Card(
-                color: Theme.of(context).primaryColorLight,
-                child: Text('CHART!'),
-                elevation: 5,
-              ),
-            ),
+            Chart(_recentTransections),
             TransectionList(_userTransections),
           ],
         ),
