@@ -83,7 +83,7 @@ class _NewTransectionState extends State<NewTransection> {
                     Expanded(
                       child: Text(
                         _selectedDate == null
-                            ? 'No date chodes!'
+                            ? 'No date chosen!'
                             : 'Date: ${DateFormat.yMd().format(_selectedDate)}',
                       ),
                     ),
