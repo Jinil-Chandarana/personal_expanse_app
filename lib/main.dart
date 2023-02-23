@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_complete_guide/widgets/chart.dart';
-
+import 'dart:io';
 import 'models/transection.dart';
 import 'widgets/new_transection.dart';
 import 'widgets/transection_list.dart';
+import 'package:flutter/cupertino.dart';
 
 void main() {
   //WidgetsFlutterBinding.ensureInitialized();
@@ -98,23 +98,44 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final isLandscap =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+    final mediaQuery = MediaQuery.of(context);
+    final isLandscap = mediaQuery.orientation == Orientation.landscape;
 
-    final appbar = AppBar(
-      title: Text('Personal Expenses'),
-    );
+    final PreferredSizeWidget appbar = Platform.isIOS
+        ? CupertinoNavigationBar(
+            middle: Text('Personal Expense'),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                GestureDetector(
+                  child: Icon(CupertinoIcons.add),
+                  onTap: () => _startNewTransection(context),
+                )
+              ],
+            ),
+          )
+        : AppBar(
+            title: Text('Personal Expenses'),
+            actions: [
+              Container(
+                margin: EdgeInsets.only(right: 4),
+                child: IconButton(
+                  onPressed: () => _startNewTransection(context),
+                  icon: Icon(Icons.add),
+                ),
+              ),
+            ],
+          );
 
     final txList = Container(
-      height: (MediaQuery.of(context).size.height -
-              appbar.preferredSize.height -
-              MediaQuery.of(context).padding.top) *
-          0.8,
-      child: TransectionList(_userTransections, _deleteTransection),
-    );
-    return Scaffold(
-      appBar: appbar,
-      body: SingleChildScrollView(
+        height: (mediaQuery.size.height -
+                appbar.preferredSize.height -
+                mediaQuery.padding.top) *
+            0.8,
+        child: TransectionList(_userTransections, _deleteTransection));
+
+    final pageBody = SafeArea(
+      child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -122,8 +143,11 @@ class _MyHomePageState extends State<MyHomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Show Chart'),
-                  Switch(
+                  Text(
+                    'Show Chart',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  Switch.adaptive(
                       value: _showChart,
                       onChanged: (val) {
                         setState(() {
@@ -135,9 +159,9 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             if (!isLandscap)
               Container(
-                height: (MediaQuery.of(context).size.height -
+                height: (mediaQuery.size.height -
                         appbar.preferredSize.height -
-                        MediaQuery.of(context).padding.top) *
+                        mediaQuery.padding.top) *
                     0.3,
                 child: Chart(_recentTransections),
               ),
@@ -145,9 +169,9 @@ class _MyHomePageState extends State<MyHomePage> {
             if (isLandscap)
               _showChart
                   ? Container(
-                      height: (MediaQuery.of(context).size.height -
+                      height: (mediaQuery.size.height -
                               appbar.preferredSize.height -
-                              MediaQuery.of(context).padding.top) *
+                              mediaQuery.padding.top) *
                           0.8,
                       child: Chart(_recentTransections),
                     )
@@ -155,10 +179,22 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => _startNewTransection(context),
-      ),
     );
+
+    return Platform.isIOS
+        ? CupertinoPageScaffold(
+            child: pageBody,
+            navigationBar: appbar,
+          )
+        : Scaffold(
+            appBar: appbar,
+            body: pageBody,
+            floatingActionButton: Platform.isIOS
+                ? Container()
+                : FloatingActionButton(
+                    child: Icon(Icons.add),
+                    onPressed: () => _startNewTransection(context),
+                  ),
+          );
   }
 }
