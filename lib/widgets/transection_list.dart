@@ -9,66 +9,63 @@ class TransectionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 450,
-      child: transections.isEmpty
-          ? Column(
-              children: [
-                Text(
-                  'No transection add yet!',
-                  style: Theme.of(context).textTheme.titleMedium,
+    return transections.isEmpty
+        ? Column(
+            children: [
+              Text(
+                'No transection add yet!',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Container(
+                height: 200,
+                child: Image.asset(
+                  'assets/images/waiting.png',
+                  fit: BoxFit.cover,
                 ),
-                SizedBox(
-                  height: 15,
-                ),
-                Container(
-                  height: 200,
-                  child: Image.asset(
-                    'assets/images/waiting.png',
-                    fit: BoxFit.cover,
-                  ),
-                )
-              ],
-            )
-          : ListView.builder(
-              itemCount: transections.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  elevation: 3,
-                  margin: EdgeInsets.symmetric(vertical: 7, horizontal: 13),
-                  child: ListTile(
-                    leading: Container(
-                      child: FittedBox(
-                        child: Text('\$${transections[index].amount}'),
-                      ),
-                      width: 80,
-                      height: 50,
-                      padding: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Theme.of(context).primaryColor, width: 2.3),
-                        //color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+              )
+            ],
+          )
+        : ListView.builder(
+            itemCount: transections.length,
+            itemBuilder: (context, index) {
+              return Card(
+                elevation: 3,
+                margin: EdgeInsets.symmetric(vertical: 7, horizontal: 13),
+                child: ListTile(
+                  leading: Container(
+                    child: FittedBox(
+                      child: Text('\$${transections[index].amount}'),
                     ),
-                    title: Text(
-                      transections[index].title,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    subtitle: Text(
-                      DateFormat.yMMMd().format(transections[index].date),
-                    ),
-                    trailing: IconButton(
-                      onPressed: () => deletTx(transections[index].id),
-                      icon: Icon(
-                        Icons.delete,
-                        color: Colors.teal[400],
-                      ),
+                    width: 80,
+                    height: 50,
+                    padding: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Theme.of(context).primaryColor, width: 2.3),
+                      //color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                );
-              },
-            ),
-    );
+                  title: Text(
+                    transections[index].title,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  subtitle: Text(
+                    DateFormat.yMMMd().format(transections[index].date),
+                  ),
+                  trailing: IconButton(
+                    onPressed: () => deletTx(transections[index].id),
+                    icon: Icon(
+                      Icons.delete,
+                      color: Colors.teal[400],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
   }
 }

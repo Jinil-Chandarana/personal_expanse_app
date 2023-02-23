@@ -87,16 +87,27 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appbar = AppBar(
+      title: Text('Personal Expenses'),
+    );
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Personal Expenses'),
-      ),
+      appBar: appbar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Chart(_recentTransections),
-            TransectionList(_userTransections, _deleteTransection),
+            Container(
+                height: (MediaQuery.of(context).size.height -
+                        appbar.preferredSize.height -
+                        MediaQuery.of(context).padding.top) *
+                    0.3,
+                child: Chart(_recentTransections)),
+            Container(
+                height: (MediaQuery.of(context).size.height -
+                        appbar.preferredSize.height -
+                        MediaQuery.of(context).padding.top) *
+                    0.7,
+                child: TransectionList(_userTransections, _deleteTransection)),
           ],
         ),
       ),
