@@ -58,13 +58,22 @@ class TransectionList extends StatelessWidget {
                   subtitle: Text(
                     DateFormat.yMMMd().format(transections[index].date),
                   ),
-                  trailing: IconButton(
-                    onPressed: () => deletTx(transections[index].id),
-                    icon: Icon(
-                      Icons.delete,
-                      color: Colors.teal[400],
-                    ),
-                  ),
+                  trailing: MediaQuery.of(context).size.width > 400
+                      ? TextButton.icon(
+                          onPressed: () => deletTx(transections[index].id),
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.teal,
+                          ),
+                          label: Text('Delete'),
+                        )
+                      : IconButton(
+                          onPressed: () => deletTx(transections[index].id),
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.teal,
+                          ),
+                        ),
                 ),
               );
             },
