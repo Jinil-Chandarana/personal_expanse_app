@@ -7,12 +7,12 @@ import 'widgets/new_transection.dart';
 import 'widgets/transection_list.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
+  //WidgetsFlutterBinding.ensureInitialized();
 // to restrict landscape mode :
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitUp,
+  //   DeviceOrientation.portraitDown,
+  // ]);
   runApp(MyApp());
 }
 
@@ -52,6 +52,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transection> _userTransections = [];
+
+  bool _showChart = false;
 
   List<Transection> get _recentTransections {
     return _userTransections.where((tx) {
@@ -96,8 +98,19 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final isLandscap =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     final appbar = AppBar(
       title: Text('Personal Expenses'),
+    );
+
+    final txList = Container(
+      height: (MediaQuery.of(context).size.height -
+              appbar.preferredSize.height -
+              MediaQuery.of(context).padding.top) *
+          0.8,
+      child: TransectionList(_userTransections, _deleteTransection),
     );
     return Scaffold(
       appBar: appbar,
@@ -105,18 +118,40 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
+            if (isLandscap)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Show Chart'),
+                  Switch(
+                      value: _showChart,
+                      onChanged: (val) {
+                        setState(() {
+                          _showChart = val;
+                          // print(_showChart);
+                        });
+                      }),
+                ],
+              ),
+            if (!isLandscap)
+              Container(
                 height: (MediaQuery.of(context).size.height -
                         appbar.preferredSize.height -
                         MediaQuery.of(context).padding.top) *
                     0.3,
-                child: Chart(_recentTransections)),
-            Container(
-                height: (MediaQuery.of(context).size.height -
-                        appbar.preferredSize.height -
-                        MediaQuery.of(context).padding.top) *
-                    0.7,
-                child: TransectionList(_userTransections, _deleteTransection)),
+                child: Chart(_recentTransections),
+              ),
+            if (!isLandscap) txList,
+            if (isLandscap)
+              _showChart
+                  ? Container(
+                      height: (MediaQuery.of(context).size.height -
+                              appbar.preferredSize.height -
+                              MediaQuery.of(context).padding.top) *
+                          0.8,
+                      child: Chart(_recentTransections),
+                    )
+                  : txList
           ],
         ),
       ),
